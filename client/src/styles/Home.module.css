@@ -34,6 +34,11 @@
   border-bottom: 3px solid #353535;
 }
 
+.Graph {
+  margin: auto;
+  text-align: center;
+}
+
 /* .container {
   min-height: 100vh;
   padding: 0 0.5rem;
