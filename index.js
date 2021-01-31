@@ -3,6 +3,8 @@ const express = require('express');
 const pg = require('pg');
 
 const app = express();
+const cors = require('cors');
+
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
 const pool = new pg.Pool({
@@ -12,6 +14,17 @@ const pool = new pg.Pool({
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
 });
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
+app.use(cors());
 
 const queryHandler = (req, res, next) => {
   pool
