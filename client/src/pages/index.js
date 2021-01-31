@@ -31,3 +31,21 @@ export default function Home() {
     </Layout>
   );
 }
+
+export const getStaticProps = async () => {
+  const res = await fetch('http://localhost:5555/events/hourly');
+  const events = await res.json();
+  console.log(events);
+
+  if (!events) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      events,
+    },
+  };
+};
