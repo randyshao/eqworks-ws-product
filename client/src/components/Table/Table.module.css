@@ -1,0 +1,35 @@
+.DailyEvents {
+  grid-template-columns: 1fr 1fr;
+}
+
+.HourlyEvents {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.DailyStats {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.HourlyStats {
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.TabGroup {
+  display: flex;
+  justify-content: center;
+}
+.Tab {
+  border: none;
+  background-color: #353535;
+  border-bottom: 3px solid white;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
+  padding: 1em;
+}
+
+.Tab.active {
+  border-bottom: 3px solid #353535;
+}

@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
+import Tables from '../components/Table/Tables';
 
 export default function Home() {
   return (
@@ -12,6 +13,10 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Event Charts</h1>
+        <div>
+          <h2 className={styles.title}>Database Tables</h2>
+          <Tables />
+        </div>
       </main>
 
       <footer className={styles.footer}>
