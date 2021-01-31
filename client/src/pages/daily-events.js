@@ -3,7 +3,6 @@ import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 
 const DailyEvents = ({ stats }) => {
-  console.log(stats);
   return (
     <Layout>
       <Head>

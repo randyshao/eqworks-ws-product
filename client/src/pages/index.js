@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
-import Tables from '../components/Table/Tables';
 
 export default function Home() {
   return (
@@ -14,38 +13,9 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Event Charts</h1>
         <div>
-          <h2 className={styles.title}>Database Tables</h2>
-          <Tables />
+          <h2 className={styles.title}>Welcome to EQ Works!</h2>
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href='https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Powered by Randy Shao
-        </a>
-      </footer>
     </Layout>
   );
 }
-
-export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:5555/events/hourly');
-  const events = await res.json();
-  console.log(events);
-
-  if (!events) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      events,
-    },
-  };
-};
