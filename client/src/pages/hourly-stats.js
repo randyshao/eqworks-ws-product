@@ -2,109 +2,98 @@ import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
+import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
-  line,
-  curveCardinal,
   axisBottom,
-  axisRight,
+  stack,
+  max,
   scaleLinear,
+  axisLeft,
+  stackOrderAscending,
+  area,
+  scalePoint,
+  curveCardinal,
 } from 'd3';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const HourlyStats = ({ stats }) => {
-  const [data, setData] = useState([]);
-  const [active, setActive] = useState(0);
   const [startDate, setStartDate] = useState(new Date(stats[0].date));
-
-  let dates = stats.map((stat) => new Date(stat.date).toISOString());
 
   let filteredStats = stats.filter((stat) => {
     return stat.date === startDate.toISOString();
   });
 
-  let impressions = filteredStats.map((stat) => stat.impressions);
-  let clicks = filteredStats.map((stat) => stat.clicks);
-  let revenue = filteredStats.map((stat) => stat.revenue);
-
-  const onButtonClick = (index) => {
-    setActive(index);
-    if (index === 0) {
-      setData(impressions);
-    } else if (index === 1) {
-      setData(clicks);
-    } else {
-      setData(revenue);
-    }
-  };
-
-  const labels = ['Impressions', 'Clicks', 'Revenue'];
-  const buttonGroup = labels.map((label, index) => {
-    return (
-      <button
-        key={index}
-        onClick={() => onButtonClick(index)}
-        className={active === index ? 'active' : null}
-      >
-        {label}
-      </button>
-    );
-  });
+  let dates = stats.map((stat) => new Date(stat.date).toISOString());
 
   const changeDate = (date) => {
     setStartDate(date);
-    if (active === 0) {
-      setData(impressions);
-    } else if (active === 1) {
-      setData(clicks);
-    } else {
-      setData(revenue);
-    }
   };
 
+  const allKeys = ['impressions', 'clicks', 'revenue'];
+
+  const colors = {
+    impressions: 'darkturquoise',
+    clicks: 'magenta',
+    revenue: 'orange',
+  };
+
+  const [keys, setKeys] = useState(allKeys);
+  const [data, setData] = useState(filteredStats);
+
   useEffect(() => {
-    setData(impressions);
-  }, []);
+    filteredStats = stats.filter((stat) => {
+      return stat.date === startDate.toISOString();
+    });
+    setData(filteredStats);
+  }, [startDate]);
 
   const svgRef = useRef();
+  const wrapperRef = useRef();
+  const dimensions = useResizeObserver(wrapperRef);
 
-  // will be called initially and on every data change
   useEffect(() => {
     const svg = select(svgRef.current);
-    const xScale = scaleLinear()
-      .domain([0, data.length - 1])
-      .range([0, 600]);
+    const { width, height } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
 
-    const yScale = scaleLinear()
-      .domain([0, Math.max(...data) * 1.4])
-      .range([300, 0]);
+    const stackGenerator = stack().keys(keys).order(stackOrderAscending);
+    const layers = stackGenerator(data);
+    const extent = [
+      0,
+      max(layers, (layer) => max(layer, (sequence) => sequence[1])),
+    ];
 
-    const xAxis = axisBottom(xScale)
-      .ticks(data.length)
-      .tickFormat((index) => index + 1);
-    svg.select('.x-axis').style('transform', 'translateY(300px)').call(xAxis);
+    const xScale = scalePoint()
+      .domain(data.map((d) => d.hour))
+      .range([0, width]);
 
-    const yAxis = axisRight(yScale);
-    svg.select('.y-axis').style('transform', 'translateX(600px)').call(yAxis);
+    const yScale = scaleLinear().domain(extent).range([height, 0]);
 
-    // generates the "d" attribute of a path element
-    const myLine = line()
-      .x((value, index) => xScale(index))
-      .y(yScale)
+    const areaGenerator = area()
+      .x((sequence) => xScale(sequence.data.hour))
+      .y0((sequence) => yScale(sequence[0]))
+      .y1((sequence) => yScale(sequence[1]))
       .curve(curveCardinal);
 
-    // renders path element, and attaches
-    // the "d" attribute from line generator above
     svg
-      .selectAll('.line')
-      .data([data])
+      .selectAll('.layer')
+      .data(layers)
       .join('path')
-      .attr('class', 'line')
-      .attr('d', myLine)
-      .attr('fill', 'none')
-      .attr('stroke', 'blue');
-  }, [data]);
+      .attr('class', 'layer')
+      .attr('fill', (layer) => colors[layer.key])
+      .attr('d', areaGenerator);
+
+    const xAxis = axisBottom(xScale);
+    svg
+      .select('.x-axis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(xAxis);
+
+    const yAxis = axisLeft(yScale);
+    svg.select('.y-axis').call(yAxis);
+  }, [colors, data, dimensions, keys]);
 
   return (
     <Layout>
@@ -115,14 +104,35 @@ const HourlyStats = ({ stats }) => {
 
       <h1 className={styles.title}>Event Charts</h1>
 
-      <h2 className={styles.title}>Chart Title</h2>
+      <h2 className={styles.title}># of Impressions vs. Clicks vs. Revenue</h2>
 
-      <div className={styles.Graph}>
+      <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
         <svg ref={svgRef}>
           <g className='x-axis' />
           <g className='y-axis' />
         </svg>
-        {buttonGroup}
+      </div>
+
+      <div className='fields'>
+        {allKeys.map((key) => (
+          <div key={key} className='field'>
+            <input
+              id={key}
+              type='checkbox'
+              checked={keys.includes(key)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setKeys(Array.from(new Set([...keys, key])));
+                } else {
+                  setKeys(keys.filter((_key) => _key !== key));
+                }
+              }}
+            />
+            <label htmlFor={key} style={{ color: colors[key] }}>
+              {key}
+            </label>
+          </div>
+        ))}
       </div>
 
       <DatePicker
