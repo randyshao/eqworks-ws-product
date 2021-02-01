@@ -19,7 +19,7 @@ const DailyEvents = ({ stats }) => {
 export default DailyEvents;
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:5555/poi');
+  const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_API + '/poi');
   const stats = await res.json();
 
   if (!stats) {
