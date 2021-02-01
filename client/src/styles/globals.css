@@ -82,6 +82,22 @@ svg rect.selection {
   stroke: none;
 }
 
+input[type='text'] {
+  display: block;
+  background-color: #e7e7e7;
+  padding: 10px;
+  font-size: 20px;
+  font-family: 'Open Sans', sans-serif;
+  border: 0;
+  border-radius: 5px;
+  width: 60%;
+  margin: 2em auto;
+}
+
+input:focus {
+  outline: none;
+}
+
 #root {
   max-width: 600px;
   margin: 0 auto;
