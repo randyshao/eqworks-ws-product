@@ -2,7 +2,6 @@ import { useState, useRef } from 'react';
 import GoogleMapReact from 'google-map-react';
 import styles from './Map.module.css';
 import useSupercluster from 'use-supercluster';
-import { cluster } from 'd3';
 
 const Map = ({ stats }) => {
   const mapRef = useRef();
@@ -34,7 +33,9 @@ const Map = ({ stats }) => {
 
       <div className={styles.GoogleMap}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: process.env.REACT_GOOGLE_API_KEY }}
+          bootstrapURLKeys={{
+            key: process.env.NEXT_PUBLIC_REACT_GOOGLE_API_KEY,
+          }}
           defaultCenter={{ lat: 45, lng: -100 }}
           defaultZoom={4}
           yesIWantToUseGoogleMapApiInternalsonGoogleApiLoaded={({ map }) => {
@@ -52,21 +53,24 @@ const Map = ({ stats }) => {
         >
           {clusters.map((cluster) => {
             const [longitude, latitude] = cluster.geometry.coordinates;
-            // console.log(clusters);
             const {
               cluster: isCluster,
               point_count: pointCount,
             } = cluster.properties;
             if (isCluster) {
               return (
-                <LocationPin key={cluster.id} lat={latitude} lng={longitude}>
+                <LocationPin
+                  key={`cluster-${cluster.id}`}
+                  lat={latitude}
+                  lng={longitude}
+                >
                   <div className={styles.Pin}>{pointCount}</div>
                 </LocationPin>
               );
             }
             return (
               <LocationPin
-                key={cluster.properties.id}
+                key={`id-${cluster.properties.id}`}
                 lat={latitude}
                 lng={longitude}
               >
