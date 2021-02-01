@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 import useResizeObserver from '../hooks/useResizeObserver';
-
 import {
   select,
   axisBottom,
