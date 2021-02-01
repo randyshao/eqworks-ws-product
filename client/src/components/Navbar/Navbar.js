@@ -33,6 +33,11 @@ const Navbar = () => {
               <a>Hourly Events</a>
             </Link>
           </li>
+          <li>
+            <Link href='/poi'>
+              <a>Map</a>
+            </Link>
+          </li>
         </nav>
       </div>
     </header>

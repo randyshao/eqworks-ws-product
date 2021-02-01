@@ -14,7 +14,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
-.TabGroup {
+/* .TabGroup {
   display: flex;
   justify-content: center;
 }
@@ -32,11 +32,12 @@
 
 .Tab.active {
   border-bottom: 3px solid #353535;
-}
+} */
 
 .Graph {
   margin: auto;
   text-align: center;
+  height: 600px;
 }
 
 /* .container {

@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useState, useEffect, useRef } from 'react';
 import Layout from '../components/Layout/Layout';
 
 const HourlyEvents = ({ stats }) => {
+  const [startDate, setStartDate] = useState(null);
+
   return (
     <Layout>
       <Head>
@@ -24,7 +27,7 @@ const HourlyEvents = ({ stats }) => {
         <tbody>
           {stats.map((stat) => (
             <tr className={styles.row} key={stat}>
-              <td>{stat.date}</td>
+              <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.hour}</td>
               <td>{stat.events}</td>
             </tr>

@@ -26,19 +26,19 @@ const DailyEvents = ({ stats }) => {
     const svg = select(svgRef.current);
     const xScale = scaleLinear()
       .domain([0, data.length - 1])
-      .range([0, 300]);
+      .range([0, 600]);
 
     const yScale = scaleLinear()
       .domain([0, Math.max(...data) * 1.5])
-      .range([150, 0]);
+      .range([300, 0]);
 
     const xAxis = axisBottom(xScale)
       .ticks(data.length)
       .tickFormat((index) => 'Jan ' + (index + 1));
-    svg.select('.x-axis').style('transform', 'translateY(150px)').call(xAxis);
+    svg.select('.x-axis').style('transform', 'translateY(300px)').call(xAxis);
 
     const yAxis = axisRight(yScale);
-    svg.select('.y-axis').style('transform', 'translateX(300px)').call(yAxis);
+    svg.select('.y-axis').style('transform', 'translateX(600px)').call(yAxis);
 
     // generates the "d" attribute of a path element
     const myLine = line()
@@ -77,7 +77,7 @@ const DailyEvents = ({ stats }) => {
         <tbody>
           {stats.map((stat) => (
             <tr className={styles.row} key={stat.events}>
-              <td>{stat.date}</td>
+              <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.events}</td>
             </tr>
           ))}
