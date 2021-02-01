@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
+import SearchBar from '../components/SearchBar/SearchBar';
 import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
@@ -41,6 +42,21 @@ const HourlyStats = ({ stats }) => {
 
   const [keys, setKeys] = useState(allKeys);
   const [data, setData] = useState(filteredStats);
+
+  const [name, setName] = useState('');
+  const [filteredList, setFilteredList] = useState([]);
+
+  useEffect(() => {
+    const results = stats.filter(
+      (stat) =>
+        stat.hour.toString().includes(name) +
+        stat.impressions.toString().includes(name) +
+        stat.clicks.toString().includes(name) +
+        stat.revenue.toString().includes(name) +
+        stat.date.slice(0, 10).includes(name)
+    );
+    setFilteredList(results);
+  }, [name]);
 
   useEffect(() => {
     filteredStats = stats.filter((stat) => {
@@ -144,6 +160,11 @@ const HourlyStats = ({ stats }) => {
 
       <h2 className={styles.title}>Database Tables</h2>
 
+      <SearchBar
+        placeholder='Search statistics...'
+        getQuery={(q) => setName(q)}
+      />
+
       <table className={styles.HourlyStats}>
         <thead>
           <tr className={styles.headers}>
@@ -155,7 +176,7 @@ const HourlyStats = ({ stats }) => {
           </tr>
         </thead>
         <tbody>
-          {stats.map((stat) => (
+          {filteredList.map((stat) => (
             <tr className={styles.row} key={stat.revenue}>
               <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.hour}</td>

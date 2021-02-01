@@ -1,8 +1,9 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 import StackedChart from '../components/Chart/StackedChart';
+import SearchBar from '../components/SearchBar/SearchBar';
 
 const DailyStats = ({ stats }) => {
   const allKeys = ['impressions', 'clicks', 'revenue'];
@@ -14,6 +15,19 @@ const DailyStats = ({ stats }) => {
   };
 
   const [keys, setKeys] = useState(allKeys);
+  const [name, setName] = useState('');
+  const [filteredList, setFilteredList] = useState([]);
+
+  useEffect(() => {
+    const results = stats.filter(
+      (stat) =>
+        stat.impressions.toString().includes(name) +
+        stat.clicks.toString().includes(name) +
+        stat.revenue.toString().includes(name) +
+        stat.date.slice(0, 10).includes(name)
+    );
+    setFilteredList(results);
+  }, [name]);
 
   return (
     <Layout>
@@ -51,6 +65,11 @@ const DailyStats = ({ stats }) => {
 
       <h2 className={styles.title}>Database Tables</h2>
 
+      <SearchBar
+        placeholder='Search statistics...'
+        getQuery={(q) => setName(q)}
+      />
+
       <table className={styles.DailyStats}>
         <thead>
           <tr className={styles.headers}>
@@ -61,7 +80,7 @@ const DailyStats = ({ stats }) => {
           </tr>
         </thead>
         <tbody>
-          {stats.map((stat) => (
+          {filteredList.map((stat) => (
             <tr className={styles.row} key={stat.impressions}>
               <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.impressions}</td>
