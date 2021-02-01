@@ -2,14 +2,6 @@ import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
-import {
-  select,
-  line,
-  curveCardinal,
-  axisBottom,
-  axisRight,
-  scaleLinear,
-} from 'd3';
 import Map from '../components/Map/Map';
 
 const DailyEvents = ({ stats }) => {
@@ -19,9 +11,6 @@ const DailyEvents = ({ stats }) => {
         <title>Create Next App</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
-
-      <h1 className={styles.title}>Event Charts</h1>
-      <h2 className={styles.title}>Database Tables</h2>
       <Map stats={stats} />
     </Layout>
   );
