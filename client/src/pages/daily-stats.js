@@ -97,7 +97,7 @@ const DailyStats = ({ stats }) => {
 export default DailyStats;
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:5555/stats/daily');
+  const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_API + '/stats/daily');
   const stats = await res.json();
 
   if (!stats) {

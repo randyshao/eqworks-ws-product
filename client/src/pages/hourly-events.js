@@ -163,7 +163,9 @@ const HourlyEvents = ({ stats }) => {
 export default HourlyEvents;
 
 export const getStaticProps = async () => {
-  const res = await fetch('http://localhost:5555/events/hourly');
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_BACKEND_API + '/events/hourly'
+  );
   const stats = await res.json();
 
   if (!stats) {
