@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 import useResizeObserver from '../hooks/useResizeObserver';
+
 import {
   select,
   axisBottom,
@@ -103,7 +104,6 @@ const HourlyStats = ({ stats }) => {
       </Head>
 
       <h1 className={styles.title}>Event Charts</h1>
-
       <h2 className={styles.title}># of Impressions vs. Clicks vs. Revenue</h2>
 
       <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
