@@ -71,10 +71,39 @@ tr:nth-child(odd) td {
 }
 
 svg {
-  background: #eee;
+  display: block;
+  width: 100%;
+  height: 600px;
+  background: #e7e7e7;
   overflow: visible;
 }
 
-.active {
-  background-color: blue;
+svg rect.selection {
+  stroke: none;
+}
+
+#root {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  height: 100vh;
+  padding: 0 50px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.fields {
+  margin-bottom: 1rem;
+}
+
+.field {
+  display: inline-block;
+  margin: 0 0.5em;
+}
+
+.field input {
+  margin-right: 0.5em;
 }

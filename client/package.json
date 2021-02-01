@@ -17,5 +17,8 @@
     "supercluster": "^7.1.2",
     "swr": "^0.4.1",
     "use-supercluster": "^0.2.9"
+  },
+  "devDependencies": {
+    "resize-observer-polyfill": "^1.5.1"
   }
 }

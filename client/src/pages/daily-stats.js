@@ -2,76 +2,77 @@ import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
+import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
-  line,
-  curveCardinal,
   axisBottom,
-  axisRight,
+  stack,
+  max,
   scaleLinear,
+  axisLeft,
+  stackOrderAscending,
+  area,
+  scalePoint,
+  curveCardinal,
 } from 'd3';
 
 const DailyStats = ({ stats }) => {
-  const [data, setData] = useState([]);
+  const allKeys = ['impressions', 'clicks', 'revenue'];
 
-  let impressions = stats.map((stat) => stat.impressions);
-  let clicks = stats.map((stat) => stat.clicks);
-  let revenue = stats.map((stat) => stat.revenue);
-
-  useEffect(() => {
-    setData(impressions);
-  }, []);
-
-  const setImpressions = () => {
-    setData(impressions);
+  const colors = {
+    impressions: 'darkturquoise',
+    clicks: 'magenta',
+    revenue: 'orange',
   };
 
-  const setClicks = () => {
-    setData(clicks);
-  };
-
-  const setRevenue = () => {
-    setData(revenue);
-  };
+  const [keys, setKeys] = useState(allKeys);
+  const [data, setData] = useState(stats);
 
   const svgRef = useRef();
+  const wrapperRef = useRef();
+  const dimensions = useResizeObserver(wrapperRef);
 
-  // will be called initially and on every data change
   useEffect(() => {
     const svg = select(svgRef.current);
-    const xScale = scaleLinear()
-      .domain([0, data.length - 1])
-      .range([0, 600]);
+    const { width, height } =
+      dimensions || wrapperRef.current.getBoundingClientRect();
 
-    const yScale = scaleLinear()
-      .domain([0, Math.max(...data) * 1.4])
-      .range([300, 0]);
+    const stackGenerator = stack().keys(keys).order(stackOrderAscending);
+    const layers = stackGenerator(data);
+    const extent = [
+      0,
+      max(layers, (layer) => max(layer, (sequence) => sequence[1])),
+    ];
 
-    const xAxis = axisBottom(xScale)
-      .ticks(data.length)
-      .tickFormat((index) => 'Jan ' + (index + 1));
-    svg.select('.x-axis').style('transform', 'translateY(300px)').call(xAxis);
+    const xScale = scalePoint()
+      .domain(data.map((d) => d.date.slice(0, 10)))
+      .range([0, width]);
 
-    const yAxis = axisRight(yScale);
-    svg.select('.y-axis').style('transform', 'translateX(600px)').call(yAxis);
+    const yScale = scaleLinear().domain(extent).range([height, 0]);
 
-    // generates the "d" attribute of a path element
-    const myLine = line()
-      .x((value, index) => xScale(index))
-      .y(yScale)
+    const areaGenerator = area()
+      .x((sequence) => xScale(sequence.data.date.slice(0, 10)))
+      .y0((sequence) => yScale(sequence[0]))
+      .y1((sequence) => yScale(sequence[1]))
       .curve(curveCardinal);
 
-    // renders path element, and attaches
-    // the "d" attribute from line generator above
     svg
-      .selectAll('.line')
-      .data([data])
+      .selectAll('.layer')
+      .data(layers)
       .join('path')
-      .attr('class', 'line')
-      .attr('d', myLine)
-      .attr('fill', 'none')
-      .attr('stroke', 'blue');
-  }, [data]);
+      .attr('class', 'layer')
+      .attr('fill', (layer) => colors[layer.key])
+      .attr('d', areaGenerator);
+
+    const xAxis = axisBottom(xScale);
+    svg
+      .select('.x-axis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(xAxis);
+
+    const yAxis = axisLeft(yScale);
+    svg.select('.y-axis').call(yAxis);
+  }, [colors, data, dimensions, keys]);
 
   return (
     <Layout>
@@ -81,7 +82,36 @@ const DailyStats = ({ stats }) => {
       </Head>
 
       <h1 className={styles.title}>Event Charts</h1>
-      <h2 className={styles.title}>Database Tables</h2>
+      <h2 className={styles.title}># of Impressions vs. Clicks vs. Revenue</h2>
+
+      <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
+        <svg ref={svgRef}>
+          <g className='x-axis' />
+          <g className='y-axis' />
+        </svg>
+      </div>
+
+      <div className='fields'>
+        {allKeys.map((key) => (
+          <div key={key} className='field'>
+            <input
+              id={key}
+              type='checkbox'
+              checked={keys.includes(key)}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setKeys(Array.from(new Set([...keys, key])));
+                } else {
+                  setKeys(keys.filter((_key) => _key !== key));
+                }
+              }}
+            />
+            <label htmlFor={key} style={{ color: colors[key] }}>
+              {key}
+            </label>
+          </div>
+        ))}
+      </div>
 
       <table className={styles.DailyStats}>
         <thead>
@@ -103,17 +133,6 @@ const DailyStats = ({ stats }) => {
           ))}
         </tbody>
       </table>
-      <h2 className={styles.title}># of Impressions</h2>
-
-      <div className={styles.Graph}>
-        <svg ref={svgRef}>
-          <g className='x-axis' />
-          <g className='y-axis' />
-        </svg>
-        <button onClick={setImpressions}>Impressions</button>
-        <button onClick={setClicks}>Clicks</button>
-        <button onClick={setRevenue}>Revenue</button>
-      </div>
     </Layout>
   );
 };
