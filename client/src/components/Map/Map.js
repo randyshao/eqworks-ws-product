@@ -26,7 +26,7 @@ const Map = ({ stats }) => {
     zoom,
     options: { radius: 75, maxZoom: 20 },
   });
-
+  console.log(clusters);
   return (
     <div>
       <h2>Points of Interest</h2>
