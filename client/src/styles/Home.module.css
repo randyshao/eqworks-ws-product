@@ -21,7 +21,7 @@
 
 .Title {
   text-align: center;
-  margin: 2em 0;
+  margin: 6em 0;
 }
 
 .PreviewImage {
@@ -67,5 +67,9 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+  }
+  .Title {
+    text-align: center;
+    margin: 2em 0;
   }
 }

@@ -25,9 +25,7 @@ const HourlyEvents = ({ stats }) => {
     return {
       date: newDate,
       hour: stat.hour,
-      impressions: stat.impressions,
-      clicks: stat.clicks,
-      revenue: stat.revenue,
+      events: stat.events,
     };
   });
 
@@ -37,7 +35,7 @@ const HourlyEvents = ({ stats }) => {
     return stat.date === startDate.toISOString();
   });
 
-  let dates = newStats.map((stat) => new Date(stat.date));
+  let dates = newStats.map((stat) => new Date(stat.date).toISOString());
 
   const changeDate = (date) => {
     setStartDate(date);
