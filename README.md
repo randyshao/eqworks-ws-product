@@ -1,32 +1,30 @@
-Work Sample for Product Aspect, Node.js Variant
+EQ Works Product Sample Challenge
 ---
 
 [What is this for?](https://github.com/EQWorks/work-samples#what-is-this)
 
-### Setup and Run
+### Overview
 
-The following are the recommended options, but you're free to use any means to get started.
+This application was created to display event data metrics that are queried from a Postgres database. It was implemented using React (Next.js) and Node.js (Express). I used D3.js for data visualization, as well as integrated an interactive map using Google Map API. For the frontend, I decided to use Next.js as opposed to running Create React App, in order to take advantage of several of its out-of-the-box features, including page routing, and static-site generation using `getStaticProps` in order to fetch and pre-render the event data at build time. For visualization tools, despite having a greater learning curve than many other chart libraries, I decided to go with D3.js as the challenge presented itself with the perfect opportunity to learn to use this tool that is considered industry standard.
 
-#### Remote Option: Glitch.com
+#### Challenges I ran into
 
-1. [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/EQWorks/ws-product-nodejs)
-2. Populate `.env` file with the environment variables given in the problem set we send to you through email
-3. Click on `Show Live` and you should see `Welcome to EQ Works 😎`
+- Being a first-time user of D3.js, I had a few obstacles when it came to rendering the data on the charts. I had to play around with the different ways of displaying the data at different hours and dates, while managing the state of the chart to make sure that it displayed the correct information.
+- I had some issues deploying the application, which was using a custom express server with Next.js. I tried multiple deployments, and in the end, I created separate deployments with the frontend and backend being split into different directories.
 
-#### Local Option 1: Node.js 6.10+
+#### What I learned
 
-1. Clone this repository
-2. Install Node.js dependencies `$ npm install`
-3. Set environment variables given in the problem set we send to you through email and run `$ npm run dev`
-4. Open your browser and point to `localhost:5555` and you should see `Welcome to EQ Works 😎`
+- Overall, this project had its challenges to overcome, but I ended up learning a lot from it! This was my first time integrating a Next.js application with a custom Express backend. From a general full-stack perspective, I gained a better understanding on how the two sides work together locally and in production.
+- Picking up D3.js was quite a task, but I learned a lot about data visualization and the different ways of managing and presenting data to a user.
 
-#### Local Option 2: Docker (`docker-compose` needed)
+### Getting Started Locally
 
-1. Clone this repository
-2. Create and populate `.env` file with the environment variables given in the problem set we send to you through email
-3. `$ docker-compose up` (or `$ docker-compose up -d` to run as a daemon)
-4. Open your browser and point to `localhost:5555` and you should see `Welcome to EQ Works 😎`
+To run the frontend:
+- `cd client`
+- `npm install`
+- `npm run dev`
 
-### Notes on working through the problems
-
-Make sure any additional Node.js level dependencies are properly added in `package.json`. We encourage a healthy mixture of your own implementations, and good choices of existing open-source libraries/tools. We will comment in the problems to indicate which ones cannot be solved purely through an off-the-shelf solution.
+To run the backend:
+- `cd api`
+- `npm install`
+- `npm run dev`
