@@ -5,7 +5,7 @@ const moment = require('moment');
 module.exports = (req, res, next) => {
   redisClient.exists(req.ip, (err, reply) => {
     if (err) {
-      console.log('Redis not working...');
+      console.log('Redis error');
       system.exit(0);
     }
     if (reply === 1) {
@@ -13,18 +13,17 @@ module.exports = (req, res, next) => {
       redisClient.get(req.ip, (err, reply) => {
         let data = JSON.parse(reply);
         let currentTime = moment().unix();
-        let difference = (currentTime - data.startTime) / 60;
-        if (difference >= 1) {
+        let time = (currentTime - data.startTime) / 60;
+        if (time >= 1) {
           let body = {
             count: 1,
             startTime: moment().unix(),
           };
           redisClient.set(req.ip, JSON.stringify(body));
-          // allow the request
           next();
         }
         // check the number of requests
-        if (difference < 1) {
+        if (time < 1) {
           if (data.count > 10) {
             return res
               .status(429)
@@ -41,7 +40,6 @@ module.exports = (req, res, next) => {
         startTime: moment().unix(),
       };
       redisClient.set(req.ip, JSON.stringify(body));
-      // allow request
       next();
     }
   });
