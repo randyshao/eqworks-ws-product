@@ -10,20 +10,15 @@
   "dependencies": {
     "d3": "^6.5.0",
     "google-map-react": "^2.1.9",
-    "http-server": "^0.12.3",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-datepicker": "^3.4.1",
     "react-dom": "17.0.1",
     "supercluster": "^7.1.2",
-    "use-supercluster": "^0.2.9",
-    "uuid": "^8.3.2"
+    "use-supercluster": "^0.2.9"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "http-proxy-middleware": "^1.0.6",
     "resize-observer-polyfill": "^1.5.1"
   }
 }
