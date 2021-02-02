@@ -3,6 +3,8 @@ EQ Works Product Sample Challenge
 
 [What is this for?](https://github.com/EQWorks/work-samples#what-is-this)
 
+![demo](https://user-images.githubusercontent.com/31750093/106570757-4ceff180-6504-11eb-994b-e62e3308681e.gif)
+
 ### Overview
 
 This application was created to display event data metrics that are queried from a Postgres database. It was implemented using React (Next.js) and Node.js (Express). I used D3.js for data visualization, as well as integrated an interactive map using Google Map API. For the frontend, I decided to use Next.js as opposed to running Create React App, in order to take advantage of several of its out-of-the-box features, including page routing, and static-site generation using `getStaticProps` in order to fetch and pre-render the event data at build time. For visualization tools, despite having a greater learning curve than many other chart libraries, I decided to go with D3.js as the challenge presented itself with the perfect opportunity to learn to use this tool that is considered industry standard.
