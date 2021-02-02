@@ -26,6 +26,7 @@ const StackedChart = ({ stats, keys, colors }) => {
     const { width, height } =
       dimensions || wrapperRef.current.getBoundingClientRect();
 
+    // orders the different values in stack on graph
     const stackGenerator = stack().keys(keys).order(stackOrderAscending);
     const layers = stackGenerator(data);
     const extent = [
@@ -33,18 +34,22 @@ const StackedChart = ({ stats, keys, colors }) => {
       max(layers, (layer) => max(layer, (sequence) => sequence[1])),
     ];
 
+    // x-scale
     const xScale = scalePoint()
       .domain(data.map((d) => d.date.slice(0, 10)))
       .range([0, width]);
 
+    // y-scale
     const yScale = scaleLinear().domain(extent).range([height, 0]);
 
+    // generate area chart
     const areaGenerator = area()
       .x((sequence) => xScale(sequence.data.date.slice(0, 10)))
       .y0((sequence) => yScale(sequence[0]))
       .y1((sequence) => yScale(sequence[1]))
       .curve(curveCardinal);
 
+    // creates svg display
     svg
       .selectAll('.layer')
       .data(layers)

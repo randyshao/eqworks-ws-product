@@ -9,6 +9,7 @@ const DailyEvents = ({ stats }) => {
   const [filteredList, setFilteredList] = useState([]);
 
   useEffect(() => {
+    // searchbox filtering
     const results = stats.filter(
       (stat) =>
         stat.name.includes(name) +

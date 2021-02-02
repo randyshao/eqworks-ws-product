@@ -17,6 +17,7 @@ const DailyStats = ({ stats }) => {
   const [name, setName] = useState('');
   const [filteredList, setFilteredList] = useState([]);
 
+  // searchbox filtering
   useEffect(() => {
     const results = stats.filter(
       (stat) =>

@@ -67,6 +67,7 @@ const Map = ({ stats }) => {
                 </LocationPin>
               );
             }
+            // returns location name when not in cluster
             return (
               <LocationPin
                 key={`id-${cluster.properties.id}`}

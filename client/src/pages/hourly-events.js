@@ -31,6 +31,7 @@ const HourlyEvents = ({ stats }) => {
 
   const [startDate, setStartDate] = useState(new Date(newStats[0].date));
 
+  // gets dates that match selected date in calendar
   let filteredStats = newStats.filter((stat) => {
     return stat.date === startDate.toISOString();
   });
@@ -53,6 +54,7 @@ const HourlyEvents = ({ stats }) => {
   const [name, setName] = useState('');
   const [filteredList, setFilteredList] = useState([]);
 
+  // searchbox filtering
   useEffect(() => {
     const results = stats.filter(
       (stat) =>
@@ -79,6 +81,7 @@ const HourlyEvents = ({ stats }) => {
     const { width, height } =
       dimensions || wrapperRef.current.getBoundingClientRect();
 
+    // orders the different values in stack on graph
     const stackGenerator = stack().keys(keys).order(stackOrderAscending);
     const layers = stackGenerator(data);
     const extent = [
@@ -86,13 +89,16 @@ const HourlyEvents = ({ stats }) => {
       max(layers, (layer) => max(layer, (sequence) => sequence[1])),
     ];
 
+    // x scale
     const xScale = scaleBand()
       .domain(data.map((d) => d.hour))
       .range([0, width])
       .padding(0.25);
 
+    // y scale
     const yScale = scaleLinear().domain(extent).range([height, 0]);
 
+    // creates svg display
     svg
       .selectAll('.layer')
       .data(layers)
