@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import GoogleMapReact from 'google-map-react';
-import styles from './Map.module.css';
+import styles from '../styles/Map.module.css';
 import useSupercluster from 'use-supercluster';
 
 const Map = ({ stats }) => {
@@ -29,7 +29,7 @@ const Map = ({ stats }) => {
   console.log(clusters);
   return (
     <div>
-      <h2>Points of Interest</h2>
+      <h2 className={styles.Title}>Points of Interest</h2>
 
       <div className={styles.GoogleMap}>
         <GoogleMapReact

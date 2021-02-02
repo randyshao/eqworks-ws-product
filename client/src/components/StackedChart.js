@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import useResizeObserver from '../../hooks/useResizeObserver';
+import styles from '../styles/Home.module.css';
+import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
   axisBottom,
@@ -63,7 +64,7 @@ const StackedChart = ({ stats, keys, colors }) => {
   }, [colors, data, dimensions, keys]);
 
   return (
-    <div>
+    <div className={styles.Chart}>
       <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
         <svg ref={svgRef}>
           <g className='x-axis' />

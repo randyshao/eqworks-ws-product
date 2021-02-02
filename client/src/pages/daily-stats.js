@@ -1,9 +1,8 @@
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
-import Layout from '../components/Layout/Layout';
-import StackedChart from '../components/Chart/StackedChart';
-import SearchBar from '../components/SearchBar/SearchBar';
+import Layout from '../components/Layout';
+import StackedChart from '../components/StackedChart';
+import SearchBar from '../components/SearchBar';
 
 const DailyStats = ({ stats }) => {
   const allKeys = ['impressions', 'clicks', 'revenue'];
@@ -31,14 +30,9 @@ const DailyStats = ({ stats }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
-      <h1 className={styles.title}>Event Charts</h1>
-      <h2 className={styles.title}># of Impressions vs. Clicks vs. Revenue</h2>
-
+      <h2 className={styles.Title}>
+        # of Impressions vs. Clicks vs. Revenue (Daily)
+      </h2>
       <StackedChart stats={stats} keys={keys} colors={colors} />
 
       <div className='fields'>
@@ -63,7 +57,7 @@ const DailyStats = ({ stats }) => {
         ))}
       </div>
 
-      <h2 className={styles.title}>Database Tables</h2>
+      <h2 className={styles.Title}>Table Data</h2>
 
       <SearchBar
         placeholder='Search statistics...'
@@ -72,7 +66,7 @@ const DailyStats = ({ stats }) => {
 
       <table className={styles.DailyStats}>
         <thead>
-          <tr className={styles.headers}>
+          <tr>
             <th>Date</th>
             <th>Impressions</th>
             <th>Clicks</th>
@@ -80,8 +74,8 @@ const DailyStats = ({ stats }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredList.map((stat) => (
-            <tr className={styles.row} key={stat.impressions}>
+          {filteredList.map((stat, index) => (
+            <tr className={styles.row} key={index}>
               <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.impressions}</td>
               <td>{stat.clicks}</td>

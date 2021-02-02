@@ -3,6 +3,11 @@
   height: 60vh;
 }
 
+.Title {
+  text-align: center;
+  margin: 2em 0;
+}
+
 .Pin {
   color: #fff;
   background: rgb(56, 131, 189);

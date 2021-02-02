@@ -1,6 +1,6 @@
 const redis = require('redis');
-const redisClient = redis.createClient();
-const moment = require('./api/node_modules/moment/ts3.1-typings/moment');
+const redisClient = redis.createClient(process.env.REDIS_URL);
+const moment = require('moment');
 
 module.exports = (req, res, next) => {
   redisClient.exists(req.ip, (err, reply) => {

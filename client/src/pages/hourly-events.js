@@ -1,8 +1,7 @@
-import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
-import Layout from '../components/Layout/Layout';
-import SearchBar from '../components/SearchBar/SearchBar';
+import Layout from '../components/Layout';
+import SearchBar from '../components/SearchBar';
 import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
@@ -19,12 +18,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const HourlyEvents = ({ stats }) => {
   const [startDate, setStartDate] = useState(new Date(stats[0].date));
+  console.log(stats[0].date);
 
   let filteredStats = stats.filter((stat) => {
     return stat.date === startDate.toISOString();
   });
 
-  let dates = stats.map((stat) => new Date(stat.date).toISOString());
+  let dates = stats.map((stat) => new Date(stat.date));
 
   const changeDate = (date) => {
     setStartDate(date);
@@ -108,30 +108,27 @@ const HourlyEvents = ({ stats }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
-      <h1 className={styles.title}>Event Charts</h1>
-      <h2 className={styles.title}>Hourly Events</h2>
-
-      <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
-        <svg ref={svgRef}>
-          <g className='x-axis' />
-          <g className='y-axis' />
-        </svg>
+      <h2 className={styles.Title}># of Events (Hourly)</h2>
+      <div className={styles.Chart}>
+        <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
+          <svg ref={svgRef}>
+            <g className='x-axis' />
+            <g className='y-axis' />
+          </svg>
+        </div>
       </div>
 
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => changeDate(date)}
-        minDate={new Date(dates[0])}
-        maxDate={new Date(dates[dates.length - 1])}
-        placeholderText='Select a date!'
-      />
+      <div style={{ textAlign: 'center' }}>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => changeDate(date)}
+          minDate={new Date(dates[0])}
+          maxDate={new Date(dates[dates.length - 1])}
+          placeholderText='Select a date!'
+        />
+      </div>
 
-      <h2 className={styles.title}>Database Tables</h2>
+      <h2 className={styles.Title}>Table Data</h2>
 
       <SearchBar
         placeholder='Search statistics...'
@@ -140,15 +137,15 @@ const HourlyEvents = ({ stats }) => {
 
       <table className={styles.HourlyEvents}>
         <thead>
-          <tr className={styles.headers}>
+          <tr>
             <th>Date</th>
             <th>Hour</th>
             <th># of Events</th>
           </tr>
         </thead>
         <tbody>
-          {filteredList.map((stat) => (
-            <tr className={styles.row} key={stat}>
+          {filteredList.map((stat, index) => (
+            <tr className={styles.row} key={index}>
               <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.hour}</td>
               <td>{stat.events}</td>

@@ -1,16 +1,9 @@
-import Head from 'next/head';
-import { useState, useEffect, useRef } from 'react';
-import styles from '../styles/Home.module.css';
-import Layout from '../components/Layout/Layout';
-import Map from '../components/Map/Map';
+import Layout from '../components/Layout';
+import Map from '../components/Map';
 
 const DailyEvents = ({ stats }) => {
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
       <Map stats={stats} />
     </Layout>
   );

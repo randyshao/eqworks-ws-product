@@ -3,10 +3,17 @@ const express = require('express');
 const pg = require('pg');
 const cors = require('cors');
 
+// const redis = require('redis');
+// const redisClient = redis.createClient();
+
+// redisClient.on('connect', function () {
+//   console.log('redis connected..');
+// });
+
 const app = express();
 dotenv.config({ path: './.env' });
 
-// const rateLimiter = require('./rateLimiter');
+const rateLimiter = require('./rateLimiter');
 
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
@@ -18,8 +25,8 @@ const pool = new pg.Pool({
   password: process.env.PGPASSWORD,
 });
 
-// app.use(rateLimiter);
-// app.use(cors());
+app.use(rateLimiter);
+app.use(cors());
 
 const queryHandler = (req, res, next) => {
   pool

@@ -1,7 +1,12 @@
-import styles from './Navbar.module.css';
+import { useState } from 'react';
+import styles from '../styles/Navbar.module.css';
 import Link from 'next/link';
 
 const Navbar = () => {
+  const [clicked, setClicked] = useState(false);
+
+  console.log(clicked);
+
   return (
     <header className={styles.NavBar}>
       <div className={styles.Container}>
@@ -39,6 +44,9 @@ const Navbar = () => {
             </Link>
           </li>
         </nav>
+        <div className={styles.Toggle} onClick={() => setClicked(!clicked)}>
+          <img src='/toggle.png' alt='' />
+        </div>
       </div>
     </header>
   );

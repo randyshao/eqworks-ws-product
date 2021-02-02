@@ -1,8 +1,7 @@
-import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import styles from '../styles/Home.module.css';
-import Layout from '../components/Layout/Layout';
-import SearchBar from '../components/SearchBar/SearchBar';
+import Layout from '../components/Layout';
+import SearchBar from '../components/SearchBar';
 import useResizeObserver from '../hooks/useResizeObserver';
 import {
   select,
@@ -113,19 +112,16 @@ const HourlyStats = ({ stats }) => {
 
   return (
     <Layout>
-      <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
-      </Head>
-
-      <h1 className={styles.title}>Event Charts</h1>
-      <h2 className={styles.title}># of Impressions vs. Clicks vs. Revenue</h2>
-
-      <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
-        <svg ref={svgRef}>
-          <g className='x-axis' />
-          <g className='y-axis' />
-        </svg>
+      <h2 className={styles.Title}>
+        # of Impressions vs. Clicks vs. Revenue (Hourly)
+      </h2>
+      <div className={styles.Chart}>
+        <div ref={wrapperRef} style={{ marginBottom: '2rem' }}>
+          <svg ref={svgRef}>
+            <g className='x-axis' />
+            <g className='y-axis' />
+          </svg>
+        </div>
       </div>
 
       <div className='fields'>
@@ -150,15 +146,17 @@ const HourlyStats = ({ stats }) => {
         ))}
       </div>
 
-      <DatePicker
-        selected={startDate}
-        onChange={(date) => changeDate(date)}
-        minDate={new Date(dates[0])}
-        maxDate={new Date(dates[dates.length - 1])}
-        placeholderText='Select a date!'
-      />
+      <div style={{ textAlign: 'center' }}>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => changeDate(date)}
+          minDate={new Date(dates[0])}
+          maxDate={new Date(dates[dates.length - 1])}
+          placeholderText='Select a date!'
+        />
+      </div>
 
-      <h2 className={styles.title}>Database Tables</h2>
+      <h2 className={styles.Title}>Table Data</h2>
 
       <SearchBar
         placeholder='Search statistics...'
@@ -167,7 +165,7 @@ const HourlyStats = ({ stats }) => {
 
       <table className={styles.HourlyStats}>
         <thead>
-          <tr className={styles.headers}>
+          <tr>
             <th>Date</th>
             <th>Hour</th>
             <th>Impressions</th>
@@ -176,8 +174,8 @@ const HourlyStats = ({ stats }) => {
           </tr>
         </thead>
         <tbody>
-          {filteredList.map((stat) => (
-            <tr className={styles.row} key={stat.revenue}>
+          {filteredList.map((stat, index) => (
+            <tr className={styles.row} key={index}>
               <td>{stat.date.slice(0, 10)}</td>
               <td>{stat.hour}</td>
               <td>{stat.impressions}</td>
