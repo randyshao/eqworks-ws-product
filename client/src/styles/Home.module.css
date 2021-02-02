@@ -23,3 +23,49 @@
   text-align: center;
   margin: 2em 0;
 }
+
+.PreviewImage {
+  margin: 1em;
+  text-align: center;
+  position: relative;
+  /* border: 1px solid rgb(192, 192, 192); */
+}
+
+.PreviewImage img {
+  width: 100%;
+}
+
+.PreviewImage .Overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: 0.1s;
+  cursor: pointer;
+}
+
+.PreviewImage .Overlay:hover {
+  opacity: 1;
+}
+
+.PreviewImage .Overlay p {
+  color: #fff;
+}
+
+@media (min-width: 600px) {
+  .PreviewImage img {
+    width: 350px;
+  }
+  .Previews {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

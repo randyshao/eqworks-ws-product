@@ -13,7 +13,6 @@ const Search = ({ placeholder, getQuery }) => {
       <input
         type='text'
         placeholder={placeholder}
-        autoFocus
         value={text}
         onChange={(e) => inputChange(e.target.value)}
       />

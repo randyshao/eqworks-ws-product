@@ -8,7 +8,7 @@ const Layout = ({ children }) => {
   return (
     <div className={styles.Container}>
       <Head>
-        <title>Create Next App</title>
+        <title>EQ Works</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <Navbar />
