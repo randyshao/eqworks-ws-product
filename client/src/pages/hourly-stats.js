@@ -19,13 +19,27 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const HourlyStats = ({ stats }) => {
-  const [startDate, setStartDate] = useState(new Date(stats[0].date));
+  // Returns stats object with correctly reformatted ISO 8601 date
+  const newStats = stats.map((stat) => {
+    const chars = stat.date.split('');
+    chars[12] = '5';
+    const newDate = chars.join('');
+    return {
+      date: newDate,
+      hour: stat.hour,
+      impressions: stat.impressions,
+      clicks: stat.clicks,
+      revenue: stat.revenue,
+    };
+  });
 
-  let filteredStats = stats.filter((stat) => {
+  const [startDate, setStartDate] = useState(new Date(newStats[0].date));
+
+  let filteredStats = newStats.filter((stat) => {
     return stat.date === startDate.toISOString();
   });
 
-  let dates = stats.map((stat) => new Date(stat.date).toISOString());
+  let dates = newStats.map((stat) => new Date(stat.date).toISOString());
 
   const changeDate = (date) => {
     setStartDate(date);
@@ -58,7 +72,7 @@ const HourlyStats = ({ stats }) => {
   }, [name]);
 
   useEffect(() => {
-    filteredStats = stats.filter((stat) => {
+    filteredStats = newStats.filter((stat) => {
       return stat.date === startDate.toISOString();
     });
     setData(filteredStats);

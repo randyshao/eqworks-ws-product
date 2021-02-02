@@ -1,12 +1,7 @@
-import { useState } from 'react';
 import styles from '../styles/Navbar.module.css';
 import Link from 'next/link';
 
-const Navbar = () => {
-  const [clicked, setClicked] = useState(false);
-
-  console.log(clicked);
-
+const Navbar = ({ drawerToggleClicked }) => {
   return (
     <header className={styles.NavBar}>
       <div className={styles.Container}>
@@ -44,7 +39,7 @@ const Navbar = () => {
             </Link>
           </li>
         </nav>
-        <div className={styles.Toggle} onClick={() => setClicked(!clicked)}>
+        <div className={styles.Toggle} onClick={drawerToggleClicked}>
           <img src='/toggle.png' alt='' />
         </div>
       </div>

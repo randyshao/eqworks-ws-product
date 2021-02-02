@@ -39,6 +39,11 @@ tr {
   display: contents;
 }
 
+li {
+  list-style: none;
+  padding: 0;
+}
+
 th,
 td {
   padding: 15px;
@@ -132,4 +137,14 @@ input:focus {
 footer {
   text-align: center;
   margin: 2em 0;
+}
+
+.Open {
+  transform: translateX(0);
+  transition: 0.3s ease-out;
+}
+
+.Close {
+  transform: translateX(-150%);
+  transition: 0.3s ease-out;
 }
